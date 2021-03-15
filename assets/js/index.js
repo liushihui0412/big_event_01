@@ -1,5 +1,14 @@
 $(function() {
     getUserInfo();
+    let layer = layui.layer;
+    $('#btnLogout').click(function() {
+        layer.confirm('确定退出登录？', { icon: 3, title: '提示' }, function(index) {
+            localStorage.removeItem('token');
+            location.href = '/login.html';
+
+            layer.close(index);
+        });
+    });
 });
 
 function getUserInfo() {
@@ -7,9 +16,6 @@ function getUserInfo() {
         type: 'get',
         url: '/my/userinfo',
         data: {},
-        headers: {
-            Authorization: localStorage.getItem('token') || ''
-        },
         success: (res) => {
             console.log(res);
             if (res.status !== 0) {
@@ -17,6 +23,7 @@ function getUserInfo() {
             }
             renderAvatar(res.data);
         }
+
     });
 }
 
